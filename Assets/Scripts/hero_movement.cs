@@ -9,12 +9,16 @@ public class hero_movement : MonoBehaviour
     [SerializeField] public float playerSpeed;
     [SerializeField] float jumpStrength;
     [SerializeField] float drag;
+    Vector2 moveDirection = Vector2.zero;
+
+    [SerializeField] private GameObject attackCollider;
+
     public PlayerControls inputActions;
-    public Animator animator;
     public InputAction playerMovement;
     public InputAction playerAttack;
     public InputAction playerJump;
-    Vector2 moveDirection = Vector2.zero;
+
+    public Animator animator;
 
     private void Awake()
     {
@@ -24,6 +28,7 @@ public class hero_movement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        attackCollider.SetActive(false);
     }
 
     private void OnEnable()
@@ -58,7 +63,6 @@ public class hero_movement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            rb.velocity = Vector2.zero;
             animator.SetBool("IsOnGround", true);
         }
     }
@@ -66,17 +70,15 @@ public class hero_movement : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
-        {
             animator.SetBool("IsOnGround", false);
-        }
+
     }
 
     private void FixedUpdate()
     {
         if (Mathf.Abs(rb.velocity.x) > 0 && !playerMovement.inProgress)
-        {
             rb.AddForce(Vector2.right * -Mathf.Sign(rb.velocity.x) * drag, ForceMode2D.Impulse);
-        }
+
     }
 
     private void PlayerMovement(InputAction.CallbackContext context)
@@ -93,11 +95,21 @@ public class hero_movement : MonoBehaviour
     private void PlayerAttack(InputAction.CallbackContext context)
     {
         animator.SetBool("IsAttacking", true);
-        Debug.Log("attack");
     }
 
     private void PlayerJump(InputAction.CallbackContext context)
     {
         rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
+    }
+
+    private void attack()        //used by event in animation of attack
+    {
+        attackCollider.SetActive(true);
+    }
+
+    public void stopAttack()
+    {
+        attackCollider.SetActive(false);
+        animator.SetBool("IsAttacking", false);
     }
 }
