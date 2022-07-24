@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class hero_movement : MonoBehaviour
+public class heroMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] public float playerSpeed;
@@ -12,6 +12,7 @@ public class hero_movement : MonoBehaviour
     Vector2 moveDirection = Vector2.zero;
 
     [SerializeField] private GameObject attackCollider;
+    [SerializeField] private Collider2D groundDetector;
 
     public PlayerControls inputActions;
     public InputAction playerMovement;
@@ -20,6 +21,18 @@ public class hero_movement : MonoBehaviour
 
     public Animator animator;
 
+    private bool isGrounded = false;
+    public bool IsGrounded
+    {
+        get => isGrounded;
+        set
+        {
+            isGrounded = value;
+            animator.SetBool("IsOnGround", value);
+        }
+    }
+
+
     private void Awake()
     {
         inputActions = new PlayerControls();
@@ -27,6 +40,7 @@ public class hero_movement : MonoBehaviour
 
     private void Start()
     {
+
         rb = GetComponent<Rigidbody2D>();
         attackCollider.SetActive(false);
     }
@@ -35,7 +49,6 @@ public class hero_movement : MonoBehaviour
     {
         playerMovement = inputActions.Player.Move;
         playerMovement.Enable();
-        playerMovement.performed += PlayerMovement;
 
         playerAttack = inputActions.Player.Fire;
         playerAttack.Enable();
@@ -54,41 +67,27 @@ public class hero_movement : MonoBehaviour
 
     private void Update()
     {
-        animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x));
         animator.SetFloat("VerticalSpeed", rb.velocity.y);
-
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            animator.SetBool("IsOnGround", true);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-            animator.SetBool("IsOnGround", false);
 
     }
 
     private void FixedUpdate()
     {
-        if (Mathf.Abs(rb.velocity.x) > 0 && !playerMovement.inProgress)
-            rb.AddForce(Vector2.right * -Mathf.Sign(rb.velocity.x) * drag, ForceMode2D.Impulse);
-
-    }
-
-    private void PlayerMovement(InputAction.CallbackContext context)
-    {
-        moveDirection = context.ReadValue<Vector2>();
-        if (moveDirection.x != 0)
+        moveDirection = playerMovement.ReadValue<Vector2>();
+        var isRunning = moveDirection.x != 0;
+        animator.SetBool("IsRunning", isRunning);
+        if (isRunning)
         {
             var currVel = rb.velocity;
             currVel.x = moveDirection.x * playerSpeed;
             rb.velocity = currVel;
+            GetComponent<SpriteRenderer>().flipX = moveDirection.x < 0;
+        }
+        else if (Mathf.Abs(rb.velocity.x) > 0)
+        {
+            var xDelta = Mathf.Abs(rb.velocity.x);
+            if (xDelta > 0.01f)
+                rb.AddForce(Vector2.right * -Mathf.Sign(rb.velocity.x) * drag, ForceMode2D.Impulse);
         }
     }
 
@@ -99,7 +98,12 @@ public class hero_movement : MonoBehaviour
 
     private void PlayerJump(InputAction.CallbackContext context)
     {
-        rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
+        if (groundDetector.IsTouchingLayers(Physics2D.AllLayers))
+        {
+            IsGrounded = false;
+            animator.Play("herochar_jump_start");
+            rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
+        }
     }
 
     private void attack()        //used by event in animation of attack
