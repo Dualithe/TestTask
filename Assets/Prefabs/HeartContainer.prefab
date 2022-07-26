@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb7cf183cabaa14f9e84bfdfe687b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnMaxHeartValueChanged: {fileID: 0}
-  OnCurrHeartValueChanged: {fileID: 0}
+  OnMaxHeartValueChanged: {fileID: 11400000, guid: ef3ac84babe532b4296b5b9f8a45225b, type: 2}
+  OnCurrHeartValueChanged: {fileID: 11400000, guid: c3765ca78a1240444a501ab8fe1c139f, type: 2}
   heartPrefab: {fileID: 4160886495124526472, guid: d124c8dadbf3c01489ce9c3aaa42caa7, type: 3}
   heartDisabledSprite: {fileID: 21300000, guid: 8e94700a3eb058a4ca2a33b08fb1ddd3, type: 3}
   heartEnabledSprite: {fileID: 21300000, guid: ba5696f589783134eb13edae77070958, type: 3}

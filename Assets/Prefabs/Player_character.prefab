@@ -219,7 +219,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 6
   jumpStrength: 16
+  knockbackForce: 10
   drag: 0.5
+  playerDamage: 1
   attackCollider: {fileID: 8939715502758069036}
   groundDetector: {fileID: 359850244747912694}
   playerMovement:
@@ -355,7 +357,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3484521230877320675}
   - component: {fileID: 930140834840101875}
-  - component: {fileID: 7642764662167510334}
   m_Layer: 10
   m_Name: Attack
   m_TagString: Untagged
@@ -404,15 +405,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4, y: 0.7}
   m_EdgeRadius: 0
---- !u!114 &7642764662167510334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8939715502758069036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b06794c34895f3f43869a5bb8a871205, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

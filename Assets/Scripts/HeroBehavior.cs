@@ -1,12 +1,16 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-public class HeroMovement : MonoBehaviour
+public class HeroBehavior : MonoBehaviour,IDamagable
 {
+    public Rigidbody2D body => rb;
     private Rigidbody2D rb;
     [SerializeField] public float playerSpeed;
     [SerializeField] float jumpStrength;
+    [SerializeField] float knockbackForce;
     [SerializeField] float drag;
+    [SerializeField] private int playerDamage = 1;
     Vector2 moveDirection = Vector2.zero;
 
     [SerializeField] private GameObject attackCollider;
@@ -39,7 +43,6 @@ public class HeroMovement : MonoBehaviour
     {
 
         rb = GetComponent<Rigidbody2D>();
-        attackCollider.SetActive(false);
     }
 
     private void OnEnable()
@@ -65,7 +68,6 @@ public class HeroMovement : MonoBehaviour
     private void Update()
     {
         animator.SetFloat("VerticalSpeed", rb.velocity.y);
-
     }
 
     private void FixedUpdate()
@@ -90,7 +92,7 @@ public class HeroMovement : MonoBehaviour
 
     private void PlayerAttack(InputAction.CallbackContext context)
     {
-        animator.SetBool("IsAttacking", true);
+        animator.Play("herochar_sword_attack");
     }
 
     private void PlayerJump(InputAction.CallbackContext context)
@@ -105,12 +107,24 @@ public class HeroMovement : MonoBehaviour
 
     private void attack()        //used by event in animation of attack
     {
-        attackCollider.SetActive(true);
+        var results = new List<Collider2D>();
+        var cf = new ContactFilter2D();
+        cf.SetLayerMask(Physics2D.GetLayerCollisionMask(attackCollider.layer));
+        attackCollider.GetComponent<Collider2D>().OverlapCollider(cf, results);
+        foreach (Collider2D enemy in results)
+        {
+            enemy.GetComponent<IDamagable>()?.takeDamage(playerDamage);
+        }
     }
 
-    public void stopAttack()
+    public void disableInput()
     {
-        attackCollider.SetActive(false);
-        animator.SetBool("IsAttacking", false);
+        inputActions.Disable();
+    }
+
+    public void takeDamage(int damage)
+    {
+        GameManager.Get.HeartManager.doDamage(damage);
+        
     }
 }

@@ -4,20 +4,23 @@ using System;
 
 public class HeartContainer : MonoBehaviour
 {
-    [SerializeField] private VoidEvent OnMaxHeartValueChanged;
-    [SerializeField] private VoidEvent OnCurrHeartValueChanged;
+    [SerializeField] private IntEvent OnMaxHeartValueChanged;
+    [SerializeField] private IntIntEvent OnCurrHeartValueChanged;
     [SerializeField] private GameObject heartPrefab;
     [SerializeField] private Sprite heartDisabledSprite;
     [SerializeField] private Sprite heartEnabledSprite;
-    private UnityAction handleMaxHeartValChanged;
-    private UnityAction handleCurrHeartValChanged;
-    private int currentHearts;
+    private UnityAction<int> handleMaxHeartValChanged;
+    private UnityAction<int, int> handleCurrHeartValChanged;
 
     private void Awake()
     {
-        currentHearts = transform.childCount;
-        handleMaxHeartValChanged = () => setMaxHearts(GameManager.Get.HeartManager.MaxHearts);
-        handleCurrHeartValChanged = () => setCurrentHearts(GameManager.Get.HeartManager.CurrentHearts);
+        handleMaxHeartValChanged = (value) => setMaxHearts(value);
+        handleCurrHeartValChanged = (pastHearts, currentHearts) => setCurrentHearts(pastHearts, currentHearts);
+    }
+
+    private void Start()
+    {
+        setMaxHearts(GameManager.Get.HeartManager.MaxHearts);
     }
 
     private void OnEnable()
@@ -34,36 +37,44 @@ public class HeartContainer : MonoBehaviour
 
     public void setMaxHearts(int hearts)
     {
+
         hearts = Math.Max(hearts, 0);
         var heartDelta = hearts - transform.childCount;
         if (heartDelta > 0)
         {
             for (int i = 0; i < heartDelta; i++)
             {
-                var heart = Instantiate(heartPrefab, transform);
-                heart.transform.GetChild(0).GetComponent<Animator>().Play("heart_regen");
-                heart.transform.GetChild(0).GetComponent<Animator>().Rebind();
+                Instantiate(heartPrefab, transform);
+                //heart.transform.GetChild(0).GetComponent<Animator>().Play("heart_regen");
             }
         }
         else
         {
             for (int i = 0; i < -heartDelta; i++)
             {
-                Destroy(gameObject.transform.GetChild(transform.childCount - 1));
+                Destroy(transform.GetChild(transform.childCount - 1 - i).gameObject);
             }
+        }
+        int currentHearts = GameManager.Get.HeartManager.CurrentHearts;
+        for (int i = 0; i < currentHearts; i++)
+        {
+            transform.GetChild(i).transform.GetChild(0).GetComponent<Animator>().Play("heart_full");
+        }
+        for (int i = currentHearts; i < hearts; i++)
+        {
+            transform.GetChild(i).transform.GetChild(0).GetComponent<Animator>().Play("heart_empty");
         }
     }
 
-    public void setCurrentHearts(int hearts)
+    public void setCurrentHearts(int pastHearts, int currentHearts)
     {
-        hearts = Math.Clamp(hearts, 0, transform.childCount);
-        var start = Math.Min(hearts, currentHearts);
-        var end = Math.Max(hearts, currentHearts);
-        var heartAnimName = hearts < currentHearts ? "heart_lose" : "heart_regen";
+        currentHearts = Math.Clamp(currentHearts, 0, transform.childCount);
+        var start = Math.Min(currentHearts, pastHearts);
+        var end = Math.Max(currentHearts, pastHearts);
+        var heartAnimName = currentHearts < pastHearts ? "heart_lose" : "heart_regen";
         for (int i = start; i < end; i++)
         {
             transform.GetChild(i).transform.GetChild(0).GetComponent<Animator>().Play(heartAnimName);
         }
-        currentHearts = hearts;
     }
 }

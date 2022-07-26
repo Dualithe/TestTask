@@ -3,50 +3,67 @@ using System;
 
 public class HeartManager : MonoBehaviour
 {
-    [SerializeField] private VoidEvent OnMaxHeartValueChanged;
-    [SerializeField] private VoidEvent OnCurrHeartValueChanged;
+    [SerializeField] private IntEvent OnMaxHeartValueChanged;
+    [SerializeField] private IntIntEvent OnCurrHeartValueChanged;
     [SerializeField] private int maxHearts;
     public int MaxHearts => maxHearts;
 
     [SerializeField] private int currentHearts;
     public int CurrentHearts => currentHearts;
 
+    [SerializeField] private float iFramesMax;
+    public float iFrames;
+
     private void Start()
     {
-        setMaxHp(3);
-        setCurrentHp(maxHearts);
+        iFramesRefresh();
     }
 
-    public void removeHeart(int damage)
+    private void FixedUpdate()
     {
-        currentHearts = Math.Max(currentHearts - damage, 0);
-        OnCurrHeartValueChanged.RaiseEvent();
+        iFrames -= Time.deltaTime;
+        iFrames = Math.Max(iFrames, 0);
+    }
+
+    public void doDamage(int value)
+    {
+        removeHeart(value);
+        iFramesRefresh();
+    }
+
+    private void iFramesRefresh()
+    {
+        iFrames = iFramesMax;
+    }
+
+    public void removeHeart(int value)
+    {
+        setCurrentHp(currentHearts - value);
         if (currentHearts == 0)
             GameManager.Get.Player.GetComponent<HeroHealth>().animateDeath();
     }
 
     public void addMaxHeart(int value)
     {
-        maxHearts += value;
-        OnMaxHeartValueChanged.RaiseEvent();
-        regenHeart(value);
+        setMaxHp(maxHearts + value);
     }
 
     public void regenHeart(int value)
     {
-        currentHearts += Math.Clamp(value, 0, maxHearts);
-        OnCurrHeartValueChanged.RaiseEvent();
+        setCurrentHp(currentHearts + value);
     }
 
     public void setMaxHp(int value)
     {
-        maxHearts = value;
-        OnMaxHeartValueChanged.RaiseEvent();
+        maxHearts = Math.Max(value, 1);
+        currentHearts = Math.Min(currentHearts,maxHearts);
+        OnMaxHeartValueChanged.RaiseEvent(maxHearts);
     }
 
     public void setCurrentHp(int value)
     {
+        var pastHearts = currentHearts;
         currentHearts = Math.Clamp(value, 0, maxHearts);
-        OnCurrHeartValueChanged.RaiseEvent();
+        OnCurrHeartValueChanged.RaiseEvent(pastHearts,currentHearts);
     }
 }

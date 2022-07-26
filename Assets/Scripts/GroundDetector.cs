@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
-    [SerializeField] HeroMovement mov;
+    [SerializeField] HeroBehavior mov;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
