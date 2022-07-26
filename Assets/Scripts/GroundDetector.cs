@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
-    [SerializeField] heroMovement mov;
+    [SerializeField] HeroMovement mov;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

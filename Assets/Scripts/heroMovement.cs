@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class heroMovement : MonoBehaviour
+public class HeroMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] public float playerSpeed;
@@ -31,7 +29,6 @@ public class heroMovement : MonoBehaviour
             animator.SetBool("IsOnGround", value);
         }
     }
-
 
     private void Awake()
     {

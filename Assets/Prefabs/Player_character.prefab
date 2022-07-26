@@ -46,7 +46,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.08}
+  m_Offset: {x: 0, y: -0.4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -57,7 +57,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.075, y: 0.019999996}
+  m_Size: {x: 0.5, y: 0.2}
   m_EdgeRadius: 0
 --- !u!114 &7471943091584003629
 MonoBehaviour:
@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 5145404998249157650}
   - component: {fileID: 669655873531308974}
   - component: {fileID: 4386172990036905831}
+  - component: {fileID: 6709929206873223182}
   m_Layer: 6
   m_Name: Player_character
   m_TagString: Player
@@ -103,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 6780346992304748847}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3484521230877320675}
@@ -292,19 +293,58 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.004999999, y: -0.0146138705}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.08851017, y: 0.13077226}
+  m_Size: {x: 0.6, y: 0.8}
   m_EdgeRadius: 0
+--- !u!114 &6709929206873223182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780346992304748847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ffcb6606ee06247b4135d2d2187aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rmvHP:
+    m_Name: Rmv HP
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6d6985fe-8f37-416e-8433-a449f7198876
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  addHP:
+    m_Name: Add HP
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ff6a8297-8722-4d16-b7fc-93ef336bab4f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  incHP:
+    m_Name: Inc HP
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e183b8f7-4835-468d-b093-1fae95bc9d6d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &8939715502758069036
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +391,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.13, y: 0}
+  m_Offset: {x: 0.75, y: -0.15}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -362,7 +402,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.15}
+  m_Size: {x: 1.4, y: 0.7}
   m_EdgeRadius: 0
 --- !u!114 &7642764662167510334
 MonoBehaviour:
