@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 6055915892092200693}
   - component: {fileID: 3874067463947268000}
   - component: {fileID: 178063165992656359}
-  - component: {fileID: 3987942523307269647}
+  - component: {fileID: 4959776362679864192}
   m_Layer: 8
   m_Name: Enemy_Mushroom
   m_TagString: Enemy
@@ -507,7 +507,8 @@ MonoBehaviour:
   maxHP: 4
   currentHP: 0
   damage: 1
---- !u!114 &3987942523307269647
+  mushroomSpeed: 0
+--- !u!114 &4959776362679864192
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -516,11 +517,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6055915892092200695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 151a5f99e2977c04281b8dcb8d59f435, type: 3}
+  m_Script: {fileID: 11500000, guid: ab890af41db9b764fa3b219650131f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points: []
-  size: 1
+  path:
+    points:
+    - {x: 0.809, y: -3.448}
+    - {x: 2.809, y: -3.448}
 --- !u!1 &6494755276239465739
 GameObject:
   m_ObjectHideFlags: 0
