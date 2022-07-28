@@ -27,7 +27,7 @@ public class EnemyBehavior : MonoBehaviour, IDamagable
 
     private Path path;
 
-    private int currDir = 0;
+    private bool currDir = false;
 
     private void Awake()
     {
@@ -43,25 +43,29 @@ public class EnemyBehavior : MonoBehaviour, IDamagable
         hp.value = currentHP;
         if (path != null)
         {
-            body.velocity = new Vector2(Mathf.Sign(path[1].x - path[0].x) * mushroomSpeed, 0);
+            animator.SetBool("IsPatrolling", true);
         }
-    }
-    private void changeDirection()
-    {
-        body.velocity *= -10;
     }
 
     private void FixedUpdate()
     {
-        if (Vector2.Distance(transform.position, path[currDir]) < 0)
+        if (path != null)
         {
-            currDir = currDir == 1 ? 0 : 1;
-            changeDirection();
+            var newVel = Mathf.Sign(currDir == true ? path[0].x - path[1].x : path[1].x - path[0].x) * mushroomSpeed;
+            body.velocity = new Vector2(newVel, body.velocity.y);
+            //body.AddForce(new Vector2(Mathf.Sign(currDir == true ? path[0].x - path[1].x : path[1].x - path[0].x) * mushroomSpeed, 0), ForceMode2D.Impulse);
+        }
+        if (currDir == true ? Mathf.Abs(path[0].x - transform.position.x) < 0.1f : Mathf.Abs(path[1].x - transform.position.x) < 0.1f)
+        {
+            currDir = !currDir;
+            GetComponent<SpriteRenderer>().flipX = !currDir;
+            body.velocity = Vector2.zero;
         }
     }
 
     public void attack(IDamagable col)
     {
+        animator.Play("mushroom_hit");
         col.takeDamage(damage);
         knockback(col.body);
     }

@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 6
-  jumpStrength: 16
+  jumpStrength: 14.5
   knockbackForce: 10
   drag: 0.5
   playerDamage: 1
@@ -320,33 +320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ffcb6606ee06247b4135d2d2187aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rmvHP:
-    m_Name: Rmv HP
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 6d6985fe-8f37-416e-8433-a449f7198876
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  addHP:
-    m_Name: Add HP
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ff6a8297-8722-4d16-b7fc-93ef336bab4f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  incHP:
-    m_Name: Inc HP
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e183b8f7-4835-468d-b093-1fae95bc9d6d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!1 &8939715502758069036
 GameObject:
   m_ObjectHideFlags: 0

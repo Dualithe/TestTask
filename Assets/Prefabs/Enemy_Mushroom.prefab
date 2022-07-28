@@ -424,7 +424,7 @@ SpriteRenderer:
   m_SortingOrder: 2
   m_Sprite: {fileID: 854286276, guid: c9a105a6c1b42b84ea0ccc21c79b0e60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -507,7 +507,7 @@ MonoBehaviour:
   maxHP: 4
   currentHP: 0
   damage: 1
-  mushroomSpeed: 0
+  mushroomSpeed: 2
 --- !u!114 &4959776362679864192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,8 +522,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path:
     points:
-    - {x: 0.809, y: -3.448}
-    - {x: 2.809, y: -3.448}
+    - {x: 7.9316154, y: 2.6667938}
+    - {x: 5.0706997, y: 2.676692}
 --- !u!1 &6494755276239465739
 GameObject:
   m_ObjectHideFlags: 0
