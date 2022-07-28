@@ -503,7 +503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: {fileID: 7042630156069431282}
-  knockbackForce: 15
+  knockbackForce: 10
   maxHP: 4
   currentHP: 0
   damage: 1

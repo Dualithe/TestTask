@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-public class HeroBehavior : MonoBehaviour,IDamagable
+public class HeroBehavior : MonoBehaviour, IDamagable
 {
     public Rigidbody2D body => rb;
     private Rigidbody2D rb;
@@ -11,9 +11,10 @@ public class HeroBehavior : MonoBehaviour,IDamagable
     [SerializeField] float knockbackForce;
     [SerializeField] float drag;
     [SerializeField] private int playerDamage = 1;
+    [SerializeField] private Vector2 colOffset;
     Vector2 moveDirection = Vector2.zero;
 
-    [SerializeField] private GameObject attackCollider;
+    [SerializeField] private BoxCollider2D attackCollider;
     [SerializeField] private Collider2D groundDetector;
 
     public PlayerControls inputActions;
@@ -37,6 +38,7 @@ public class HeroBehavior : MonoBehaviour,IDamagable
     private void Awake()
     {
         inputActions = new PlayerControls();
+        colOffset = attackCollider.offset;
     }
 
     private void Start()
@@ -81,6 +83,9 @@ public class HeroBehavior : MonoBehaviour,IDamagable
             currVel.x = moveDirection.x * playerSpeed;
             rb.velocity = currVel;
             GetComponent<SpriteRenderer>().flipX = moveDirection.x < 0;
+            var offsetX = moveDirection.x < 0 ? -colOffset.x : colOffset.x;
+            attackCollider.offset = new Vector2(offsetX, colOffset.y);
+
         }
         else if (Mathf.Abs(rb.velocity.x) > 0)
         {
@@ -109,11 +114,13 @@ public class HeroBehavior : MonoBehaviour,IDamagable
     {
         var results = new List<Collider2D>();
         var cf = new ContactFilter2D();
-        cf.SetLayerMask(Physics2D.GetLayerCollisionMask(attackCollider.layer));
-        attackCollider.GetComponent<Collider2D>().OverlapCollider(cf, results);
+        cf.SetLayerMask(Physics2D.GetLayerCollisionMask(attackCollider.gameObject.layer));
+        attackCollider.OverlapCollider(cf, results);
         foreach (Collider2D enemy in results)
         {
             enemy.GetComponent<IDamagable>()?.takeDamage(playerDamage);
+            var knockbackDir = (enemy.transform.position - transform.position).normalized;
+            enemy.attachedRigidbody.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
         }
     }
 
@@ -125,6 +132,6 @@ public class HeroBehavior : MonoBehaviour,IDamagable
     public void takeDamage(int damage)
     {
         GameManager.Get.HeartManager.doDamage(damage);
-        
+
     }
 }

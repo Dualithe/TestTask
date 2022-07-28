@@ -219,10 +219,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 6
   jumpStrength: 14.5
-  knockbackForce: 10
+  knockbackForce: 3
   drag: 0.5
   playerDamage: 1
-  attackCollider: {fileID: 8939715502758069036}
+  colOffset: {x: 0, y: 0}
+  attackCollider: {fileID: 930140834840101875}
   groundDetector: {fileID: 359850244747912694}
   playerMovement:
     m_Name: Player Movement

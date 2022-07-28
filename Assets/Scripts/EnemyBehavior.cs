@@ -28,6 +28,7 @@ public class EnemyBehavior : MonoBehaviour, IDamagable
     private Path path;
 
     private bool currDir = false;
+    private bool isMoving = false;
 
     private void Awake()
     {
@@ -43,29 +44,28 @@ public class EnemyBehavior : MonoBehaviour, IDamagable
         hp.value = currentHP;
         if (path != null)
         {
+            isMoving = true;
             animator.SetBool("IsPatrolling", true);
         }
     }
 
     private void FixedUpdate()
     {
-        if (path != null)
+        if (path != null && isMoving == true)
         {
             var newVel = Mathf.Sign(currDir == true ? path[0].x - path[1].x : path[1].x - path[0].x) * mushroomSpeed;
             body.velocity = new Vector2(newVel, body.velocity.y);
-            //body.AddForce(new Vector2(Mathf.Sign(currDir == true ? path[0].x - path[1].x : path[1].x - path[0].x) * mushroomSpeed, 0), ForceMode2D.Impulse);
-        }
-        if (currDir == true ? Mathf.Abs(path[0].x - transform.position.x) < 0.1f : Mathf.Abs(path[1].x - transform.position.x) < 0.1f)
-        {
-            currDir = !currDir;
-            GetComponent<SpriteRenderer>().flipX = !currDir;
-            body.velocity = Vector2.zero;
+            if (currDir == true ? path[0].x < transform.position.x && path[1].x < transform.position.x : path[0].x > transform.position.x && path[1].x > transform.position.x)
+            {
+                currDir = !currDir;
+                GetComponent<SpriteRenderer>().flipX = !currDir;
+                body.velocity = Vector2.zero;
+            }
         }
     }
 
     public void attack(IDamagable col)
     {
-        animator.Play("mushroom_hit");
         col.takeDamage(damage);
         knockback(col.body);
     }
@@ -74,6 +74,11 @@ public class EnemyBehavior : MonoBehaviour, IDamagable
     {
         var knockbackDir = (col.transform.position - transform.position).normalized;
         col.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
+    }
+
+    private void resetMovement()
+    {
+        isMoving = true;
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -86,6 +91,7 @@ public class EnemyBehavior : MonoBehaviour, IDamagable
 
     public void takeDamage(int dmg)
     {
+        isMoving = false;
         currentHP -= dmg;
         hp.value = currentHP;
         animator.Play("mushroom_hit");
