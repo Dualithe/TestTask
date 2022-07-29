@@ -219,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 6
   jumpStrength: 14.5
-  knockbackForce: 3
+  knockbackForce: 5
   drag: 0.5
   playerDamage: 1
   colOffset: {x: 0, y: 0}

@@ -24,6 +24,9 @@ public class HeroBehavior : MonoBehaviour, IDamagable
 
     public Animator animator;
 
+    [SerializeField] private float timeElapsedFromLeavingGround;
+    public bool jumped = false;
+
     private bool isGrounded = false;
     public bool IsGrounded
     {
@@ -32,6 +35,7 @@ public class HeroBehavior : MonoBehaviour, IDamagable
         {
             isGrounded = value;
             animator.SetBool("IsOnGround", value);
+            timeElapsedFromLeavingGround = 0;
         }
     }
 
@@ -102,8 +106,9 @@ public class HeroBehavior : MonoBehaviour, IDamagable
 
     private void PlayerJump(InputAction.CallbackContext context)
     {
-        if (groundDetector.IsTouchingLayers(Physics2D.AllLayers))
+        if ((Time.time - groundDetector.GetComponent<GroundDetector>().timeSinceLeavingGround < 0.2f && jumped == false) || (groundDetector.IsTouchingLayers(Physics2D.GetLayerCollisionMask(groundDetector.gameObject.layer)) && jumped == false))
         {
+            jumped = true;
             IsGrounded = false;
             animator.Play("herochar_jump_start");
             rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
