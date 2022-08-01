@@ -15,7 +15,7 @@ public class HeroBehavior : MonoBehaviour, IDamagable
     Vector2 moveDirection = Vector2.zero;
 
     [SerializeField] private BoxCollider2D attackCollider;
-    [SerializeField] private Collider2D groundDetector;
+    [SerializeField] private GroundDetector groundDetector;
 
     public PlayerControls inputActions;
     public InputAction playerMovement;
@@ -24,7 +24,6 @@ public class HeroBehavior : MonoBehaviour, IDamagable
 
     public Animator animator;
 
-    [SerializeField] private float timeElapsedFromLeavingGround;
     public bool jumped = false;
 
     private bool isGrounded = false;
@@ -35,7 +34,6 @@ public class HeroBehavior : MonoBehaviour, IDamagable
         {
             isGrounded = value;
             animator.SetBool("IsOnGround", value);
-            timeElapsedFromLeavingGround = 0;
         }
     }
 
@@ -106,13 +104,24 @@ public class HeroBehavior : MonoBehaviour, IDamagable
 
     private void PlayerJump(InputAction.CallbackContext context)
     {
-        if ((Time.time - groundDetector.GetComponent<GroundDetector>().timeSinceLeavingGround < 0.2f && jumped == false) || (groundDetector.IsTouchingLayers(Physics2D.GetLayerCollisionMask(groundDetector.gameObject.layer)) && jumped == false))
+        if (canPlayerJump())
         {
             jumped = true;
             IsGrounded = false;
             animator.Play("herochar_jump_start");
             rb.AddForce(Vector2.up * jumpStrength, ForceMode2D.Impulse);
         }
+    }
+
+    private bool canPlayerJump()
+    {                                   
+        //Coyote jump
+        if (Time.time - groundDetector.timeSinceLeavingGround < 0.2f && jumped == false)
+            return true;                
+        //Regular jump
+        if (groundDetector.gdCol.IsTouchingLayers(Physics2D.GetLayerCollisionMask(groundDetector.gameObject.layer)) && jumped == false)
+            return true;
+        return false;
     }
 
     private void attack()        //used by event in animation of attack

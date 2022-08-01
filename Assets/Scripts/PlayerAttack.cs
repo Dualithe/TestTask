@@ -8,7 +8,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (collision.tag == "Enemy" && !entered)
         {
-            collision.GetComponent<EnemyBehavior>().takeDamage(playerDamage);
+            collision.GetComponent<MushroomBehavior>()?.takeDamage(playerDamage);
+            collision.GetComponent<GoblinBehavior>()?.takeDamage(playerDamage);
             entered = true;
         }
     }

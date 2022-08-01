@@ -72,6 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mov: {fileID: 5145404998249157650}
+  timeSinceLeavingGround: 0
 --- !u!1 &6780346992304748847
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +225,7 @@ MonoBehaviour:
   playerDamage: 1
   colOffset: {x: 0, y: 0}
   attackCollider: {fileID: 930140834840101875}
-  groundDetector: {fileID: 359850244747912694}
+  groundDetector: {fileID: 7471943091584003629}
   playerMovement:
     m_Name: Player Movement
     m_Type: 0
@@ -253,6 +254,8 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   animator: {fileID: 143181267059656361}
+  timeElapsedFromLeavingGround: 0
+  jumped: 0
 --- !u!114 &669655873531308974
 MonoBehaviour:
   m_ObjectHideFlags: 0
