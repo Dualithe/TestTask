@@ -62,33 +62,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""addHP"",
-                    ""type"": ""Button"",
-                    ""id"": ""ebda6588-2c9a-4305-b678-b3acae1bc612"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""rmvHP"",
-                    ""type"": ""Button"",
-                    ""id"": ""a035aebd-b219-4068-ba94-6c9638d84347"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""incHP"",
-                    ""type"": ""Button"",
-                    ""id"": ""074a28c5-e2af-4c84-9dea-440452d3696b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -314,8 +287,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""580e263f-861f-4889-a2f4-987a8b02e702"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""72600ba0-73fd-41ad-834a-4c059d00aba5"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -325,34 +298,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4185a64f-c73f-4826-a157-0c8b139e06cb"",
-                    ""path"": ""<Keyboard>/leftBracket"",
+                    ""id"": ""580e263f-861f-4889-a2f4-987a8b02e702"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""addHP"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b4c8c1a1-551d-44c2-9056-fa90b302cc3d"",
-                    ""path"": ""<Keyboard>/rightBracket"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""rmvHP"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""92f7d68b-00a4-4a7e-b5ad-da9ffba66b39"",
-                    ""path"": ""<Keyboard>/quote"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""incHP"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -944,9 +895,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_addHP = m_Player.FindAction("addHP", throwIfNotFound: true);
-        m_Player_rmvHP = m_Player.FindAction("rmvHP", throwIfNotFound: true);
-        m_Player_incHP = m_Player.FindAction("incHP", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1022,9 +970,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_addHP;
-    private readonly InputAction m_Player_rmvHP;
-    private readonly InputAction m_Player_incHP;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1033,9 +978,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @addHP => m_Wrapper.m_Player_addHP;
-        public InputAction @rmvHP => m_Wrapper.m_Player_rmvHP;
-        public InputAction @incHP => m_Wrapper.m_Player_incHP;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1057,15 +999,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @addHP.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddHP;
-                @addHP.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddHP;
-                @addHP.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAddHP;
-                @rmvHP.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRmvHP;
-                @rmvHP.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRmvHP;
-                @rmvHP.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRmvHP;
-                @incHP.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIncHP;
-                @incHP.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIncHP;
-                @incHP.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIncHP;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1082,15 +1015,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @addHP.started += instance.OnAddHP;
-                @addHP.performed += instance.OnAddHP;
-                @addHP.canceled += instance.OnAddHP;
-                @rmvHP.started += instance.OnRmvHP;
-                @rmvHP.performed += instance.OnRmvHP;
-                @rmvHP.canceled += instance.OnRmvHP;
-                @incHP.started += instance.OnIncHP;
-                @incHP.performed += instance.OnIncHP;
-                @incHP.canceled += instance.OnIncHP;
             }
         }
     }
@@ -1251,9 +1175,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnAddHP(InputAction.CallbackContext context);
-        void OnRmvHP(InputAction.CallbackContext context);
-        void OnIncHP(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
